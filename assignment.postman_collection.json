@@ -303,6 +303,101 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "posts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Use the details fetched to make a search for the posts written by the",
+							"//user.",
+							"",
+							"//get username  environment",
+							"",
+							"pm.environment.get(\"usernameId\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"",
+							"",
+							"//Test  userId",
+							"",
+							"pm.test(\" Test userId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4,5,6,8,9].userId).to.eql(pm.environment.get(\"usernameId\"));",
+							"});",
+							"",
+							"//Test  id",
+							"",
+							"pm.test(\" Test id\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4,5,6,8,9].userId).to.be.not.null;",
+							"});",
+							"",
+							"//Test  title",
+							"",
+							"pm.test(\" Test title\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4,5,6,8,9].title).to.be.not.null;",
+							"});",
+							"",
+							"//Test  body",
+							"",
+							"pm.test(\" Test title\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4,5,6,8,9].body).to.be.not.null;",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts?userId={{usernameId}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{usernameId}}"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"variable": [
