@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "user",
+			"name": "search_user",
 			"event": [
 				{
 					"listen": "test",
@@ -28,7 +28,13 @@
 							"    pm.response.to.have.status('OK');",
 							"});",
 							"",
+							"//response must be valid and have a body",
 							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
 							"",
 							"// Body matches string validations for id",
 							"",
@@ -305,7 +311,7 @@
 			"response": []
 		},
 		{
-			"name": "posts",
+			"name": "Details_fetched_posts_by_the_user",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -337,7 +343,13 @@
 							"    pm.response.to.have.status('OK');",
 							"});",
 							"",
+							"//response must be valid and have a body",
 							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
 							"",
 							"//Test  userId",
 							"",
@@ -362,12 +374,19 @@
 							"",
 							"//Test  body",
 							"",
-							"pm.test(\" Test title\", function () {",
+							"pm.test(\" Test body\", function () {",
 							"    let jsonData = pm.response.json();",
 							"    pm.expect(jsonData[0,1,2,3,4,5,6,8,9].body).to.be.not.null;",
 							"});",
 							"",
 							"",
+							"//get psotId from response ",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"postId\",(jsonData.map((data)=>{",
+							"   return (data.id)",
+							"",
+							"})));",
 							"",
 							""
 						],
@@ -393,6 +412,1261 @@
 						{
 							"key": "userId",
 							"value": "{{usernameId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_81",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_81 = (pm.environment.get(\"postId\")[0]);",
+							"    pm.environment.set(\"postId_81\",postId_81);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_81}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_81}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_82",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3,4])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_82 = (pm.environment.get(\"postId\")[1]);",
+							"    pm.environment.set(\"postId_82\",postId_82);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_82}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_82}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_83",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_83 = (pm.environment.get(\"postId\")[2]);",
+							"    pm.environment.set(\"postId_83\",postId_83);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_83}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_83}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_84",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_84 = (pm.environment.get(\"postId\")[3]);",
+							"    pm.environment.set(\"postId_84\",postId_84);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_84}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_84}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_85",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_85 = (pm.environment.get(\"postId\")[4]);",
+							"    pm.environment.set(\"postId_85\",postId_85);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_85}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_85}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_86",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_86 = (pm.environment.get(\"postId\")[5]);",
+							"    pm.environment.set(\"postId_86\",postId_86);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_86}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_86}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_87",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_87 = (pm.environment.get(\"postId\")[6]);",
+							"    pm.environment.set(\"postId_87\",postId_87);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_87}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_87}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_88",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_88 = (pm.environment.get(\"postId\")[7]);",
+							"    pm.environment.set(\"postId_88\",postId_88);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_88}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_88}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_89",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_89 = (pm.environment.get(\"postId\")[8]);",
+							"    pm.environment.set(\"postId_89\",postId_89);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_89}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_89}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_postid_90",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Fetch the comments and validate if the emails in the",
+							"//comment section",
+							"",
+							"//Test status code",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Test Status code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							"//Test  postId",
+							"",
+							"pm.test(\" Test postId\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0,1,2,3,4].postId).to.be.not.null;",
+							"});",
+							"",
+							"//validate an email id",
+							"",
+							"function ValidateEmail(mail) ",
+							"{",
+							" if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$/.test(mail))",
+							"  {",
+							"    return (true)",
+							"  }",
+							"    ",
+							"    return (false)",
+							"}",
+							"",
+							"//get  all email  from the response",
+							"",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"email\",(jsonData.map((data)=>{",
+							"   return (data.email)",
+							"",
+							"})));",
+							"",
+							"",
+							"//set environment for ValidateEmail",
+							"",
+							"let validateemail = ValidateEmail(pm.environment.get(\"email\")[0,1,2,3])",
+							"pm.environment.set(\"validateemail\", validateemail);",
+							"",
+							"//fetch the comments and validate if the emails in the",
+							"//comment section are in the proper format.",
+							"",
+							"pm.test(\"Test email the proper format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(pm.environment.get(\"validateemail\")).to.eql(true);",
+							"    pm.expect(jsonData[0].email).to.eql(pm.environment.get(\"email\")[0]);",
+							"    pm.expect(jsonData[1].email).to.eql(pm.environment.get(\"email\")[1]);",
+							"    pm.expect(jsonData[2].email).to.eql(pm.environment.get(\"email\")[2]);",
+							"    pm.expect(jsonData[3].email).to.eql(pm.environment.get(\"email\")[3]);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//get postId from posts",
+							"",
+							"let postId_90 = (pm.environment.get(\"postId\")[9]);",
+							"    pm.environment.set(\"postId_90\",postId_90);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{postId_90}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postId_90}}"
 						}
 					]
 				}
