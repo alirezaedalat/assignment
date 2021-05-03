@@ -306,7 +306,8 @@
 							"value": "{{username}}"
 						}
 					]
-				}
+				},
+				"description": "Search for the user with username “Delphine”."
 			},
 			"response": []
 		},
@@ -414,7 +415,8 @@
 							"value": "{{usernameId}}"
 						}
 					]
-				}
+				},
+				"description": "Use the details fetched to make a search for the posts written by the\nuser."
 			},
 			"response": []
 		},
@@ -540,7 +542,8 @@
 							"value": "{{postId_81}}"
 						}
 					]
-				}
+				},
+				"description": "For 81 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
 			},
 			"response": []
 		},
@@ -666,7 +669,8 @@
 							"value": "{{postId_82}}"
 						}
 					]
-				}
+				},
+				"description": "For 82 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
 			},
 			"response": []
 		},
@@ -792,7 +796,8 @@
 							"value": "{{postId_83}}"
 						}
 					]
-				}
+				},
+				"description": "For 83 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
 			},
 			"response": []
 		},
@@ -918,7 +923,8 @@
 							"value": "{{postId_84}}"
 						}
 					]
-				}
+				},
+				"description": "For 84 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
 			},
 			"response": []
 		},
@@ -1044,7 +1050,8 @@
 							"value": "{{postId_85}}"
 						}
 					]
-				}
+				},
+				"description": "For 85 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
 			},
 			"response": []
 		},
@@ -1169,7 +1176,8 @@
 							"value": "{{postId_86}}"
 						}
 					]
-				}
+				},
+				"description": "For 86 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
 			},
 			"response": []
 		},
@@ -1294,7 +1302,8 @@
 							"value": "{{postId_87}}"
 						}
 					]
-				}
+				},
+				"description": "For 87 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
 			},
 			"response": []
 		},
@@ -1419,7 +1428,8 @@
 							"value": "{{postId_88}}"
 						}
 					]
-				}
+				},
+				"description": "For 88 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
 			},
 			"response": []
 		},
@@ -1544,7 +1554,8 @@
 							"value": "{{postId_89}}"
 						}
 					]
-				}
+				},
+				"description": "For 89 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
 			},
 			"response": []
 		},
@@ -1669,7 +1680,252 @@
 							"value": "{{postId_90}}"
 						}
 					]
+				},
+				"description": "For 90 postID, fetch the comments and validate if the emails in the\ncomment section are in the proper format.\n"
+			},
+			"response": []
+		},
+		{
+			"name": "search_invalid _username",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Search for the user with invalid username ",
+							"",
+							"",
+							"//Test status code ",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"//Test code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"  ",
+							"});",
+							"",
+							"// should not have data",
+							"",
+							"pm.test(\"Body matches no data\", function () {",
+							"    pm.expect(pm.response.text()).to.include([]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//set environment for invalid username ",
+							"",
+							"let invalid_username = \"1\";",
+							"pm.collectionVariables.set(\"invalid_username\",invalid_username);"
+						],
+						"type": "text/javascript"
+					}
 				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/users?username={{invalid_username}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "{{invalid_username}}"
+						}
+					]
+				},
+				"description": "Think of various scenarios for the test workflow, all the things that\ncan go wrong. Add them to test coverage\n\nsearch by invalid username"
+			},
+			"response": []
+		},
+		{
+			"name": "Details_fetched_posts_by_the_invalid_username",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Use the details fetched to make a search for the posts written by the",
+							"// invalid usernameId.",
+							"",
+							"//set invalid usernameId  environment",
+							"",
+							"var invalid_usernameId = \"Test\";",
+							"    pm.environment.set(\"invalid_usernameId\",invalid_usernameId);",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Search for the user with username “Delphine”",
+							"",
+							"",
+							"//Test status code ",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"//Test code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"  ",
+							"});",
+							"",
+							"// should not have data",
+							"",
+							"pm.test(\"Body matches no data\", function () {",
+							"    pm.expect(pm.response.text()).to.include([]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts?userId={{invalid_usernameId}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{invalid_usernameId}}"
+						}
+					]
+				},
+				"description": "Think of various scenarios for the test workflow, all the things that\ncan go wrong. Add them to test coverage\n\nsearch by invalid usernameId"
+			},
+			"response": []
+		},
+		{
+			"name": "post_fetch_comments_invalid_postid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Use the details fetched to make a search for the invalid posts written by the user.",
+							"",
+							"",
+							"//Test status code ",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"//Test code name has string",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status('OK');",
+							"});",
+							"",
+							"//response must be valid and have a body",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"  ",
+							"});",
+							"",
+							"// should not have data",
+							"",
+							"pm.test(\"Body matches no data\", function () {",
+							"    pm.expect(pm.response.text()).to.include([]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//set invalid postId environment",
+							"",
+							"let invalid_postId =  \"Test\";",
+							"    pm.environment.set(\"invalid_postId\",invalid_postId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/comments?postId={{invalid_postId}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{invalid_postId}}"
+						}
+					]
+				},
+				"description": "Think of various scenarios for the test workflow, all the things that\ncan go wrong. Add them to test coverage.\n\nUse the details fetched to make a search for the invalid posts written by the user."
 			},
 			"response": []
 		}
@@ -1677,6 +1933,10 @@
 	"variable": [
 		{
 			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "invalid_username",
 			"value": ""
 		}
 	]
