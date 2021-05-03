@@ -1,7 +1,7 @@
 # assignment
 
 I used Postman for this test. From chai js framework in JavaScript. Which has 3 files
-1. Includes Jason file
+1. Includes json file
 2. environment variables file
 3. HTML report dashboard
 
