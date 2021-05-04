@@ -10,7 +10,7 @@ You can use Docker,Postman and cli to run the tests
 2. cli  : https://www.npmjs.com/package/newman
 
 Using Newman CLI : 
-newman run assignment.postman_collection.json -e assignment.postman_environment.json -r cli,htmlextra
+newman run Tests/assignment.postman_collection.json -e Tests/assignment.postman_environment.json -r cli,htmlextra
 newman
 
 Report Example :
