@@ -1,9 +1,8 @@
 # assignment
 
-I used Postman for this test. From chai js framework in JavaScript. Which has 3 files
+I used Postman for this test. From chai js framework in JavaScript. Which has ‍2 files
 1. Includes json file
 2. environment variables file
-3. HTML report dashboard
 
 You can use Docker,Postman and cli to run the tests 
 1. docker: https://learning.postman.com/docs/running-collections/using-newman-cli/newman-with-docker/
